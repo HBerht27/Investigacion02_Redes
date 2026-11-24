@@ -1,0 +1,191 @@
+{
+  "target": "bmv2",
+  "p4info": "build/router.p4info.txtpb",
+  "bmv2_json": "build/router.json",
+  "table_entries": [
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "default_action": true,
+      "action_name": "MyIngress.drop_no_route",
+      "action_params": {}
+    },
+    {
+      "table": "MyIngress.ipv6_lpm",
+      "default_action": true,
+      "action_name": "MyIngress.drop_no_route_v6",
+      "action_params": {}
+    },
+    {
+      "table": "MyEgress.port_mac",
+      "match": {
+        "standard_metadata.egress_port": 1
+      },
+      "action_name": "MyEgress.set_smac",
+      "action_params": {
+        "mac": "00:aa:00:00:01:01"
+      }
+    },
+    {
+      "table": "MyIngress.port_ipv4",
+      "match": {
+        "standard_metadata.ingress_port": 1
+      },
+      "action_name": "MyIngress.set_router_ip",
+      "action_params": {
+        "ip": "10.0.1.254"
+      }
+    },
+    {
+      "table": "MyEgress.port_mac",
+      "match": {
+        "standard_metadata.egress_port": 2
+      },
+      "action_name": "MyEgress.set_smac",
+      "action_params": {
+        "mac": "00:aa:00:00:01:02"
+      }
+    },
+    {
+      "table": "MyIngress.port_ipv4",
+      "match": {
+        "standard_metadata.ingress_port": 2
+      },
+      "action_name": "MyIngress.set_router_ip",
+      "action_params": {
+        "ip": "10.10.12.1"
+      }
+    },
+    {
+      "table": "MyEgress.port_mac",
+      "match": {
+        "standard_metadata.egress_port": 3
+      },
+      "action_name": "MyEgress.set_smac",
+      "action_params": {
+        "mac": "00:aa:00:00:01:03"
+      }
+    },
+    {
+      "table": "MyIngress.port_ipv4",
+      "match": {
+        "standard_metadata.ingress_port": 3
+      },
+      "action_name": "MyIngress.set_router_ip",
+      "action_params": {
+        "ip": "10.10.13.1"
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": [
+          "10.0.1.0",
+          24
+        ]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "08:00:00:00:01:11",
+        "port": 1
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": [
+          "10.0.0.0",
+          16
+        ]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:02:02",
+        "port": 2
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": [
+          "10.0.3.0",
+          24
+        ]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:03:03",
+        "port": 3
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": [
+          "10.0.4.0",
+          24
+        ]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:03:03",
+        "port": 3
+      }
+    },
+    {
+      "table": "MyIngress.ipv6_lpm",
+      "match": {
+        "hdr.ipv6.dstAddr": [
+          "2001:db8:1::",
+          64
+        ]
+      },
+      "action_name": "MyIngress.ipv6_forward",
+      "action_params": {
+        "dstAddr": "08:00:00:00:01:11",
+        "port": 1
+      }
+    },
+    {
+      "table": "MyIngress.ipv6_lpm",
+      "match": {
+        "hdr.ipv6.dstAddr": [
+          "2001:db8:2::",
+          64
+        ]
+      },
+      "action_name": "MyIngress.ipv6_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:02:02",
+        "port": 2
+      }
+    },
+    {
+      "table": "MyIngress.ipv6_lpm",
+      "match": {
+        "hdr.ipv6.dstAddr": [
+          "2001:db8:3::",
+          64
+        ]
+      },
+      "action_name": "MyIngress.ipv6_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:03:03",
+        "port": 3
+      }
+    },
+    {
+      "table": "MyIngress.ipv6_lpm",
+      "match": {
+        "hdr.ipv6.dstAddr": [
+          "2001:db8:4::",
+          64
+        ]
+      },
+      "action_name": "MyIngress.ipv6_forward",
+      "action_params": {
+        "dstAddr": "00:aa:00:00:03:03",
+        "port": 3
+      }
+    }
+  ]
+}

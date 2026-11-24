@@ -1,0 +1,22 @@
+py print("\n===== 1. Conectividad entre todos los hosts =====")
+pingall
+py print("\n===== 2. TTL: h1 -> h4 pasa por s1 y s3 (TTL 64 -> 62) =====")
+h1 ping -c 3 10.0.4.4
+h4 python3 tests/receive.py --count 3 --timeout 12 > logs/h4_receive.txt 2>&1 &
+h4 sleep 2
+h1 python3 tests/probe.py 10.0.4.4 --count 3
+h4 sleep 1
+h4 cat logs/h4_receive.txt
+sh python3 tests/ttl_report.py --src 10.0.1.1 --dst 10.0.4.4
+py print("\n===== 3. TTL agotado: ICMP Time Exceeded y traceroute =====")
+h1 python3 tests/probe.py 10.0.4.4 --ttl 1
+h1 python3 tests/probe.py 10.0.4.4 --trace
+py print("\n===== 4. LPM: la ruta /32 de s3 manda 10.0.2.2 por s1 =====")
+h3 python3 tests/probe.py 10.0.2.2 --trace
+py print("\n===== 5. Descarte sin ruta (default drop) =====")
+h1 python3 tests/probe.py 192.168.50.1 --count 2
+h1 python3 tests/probe.py 10.0.99.1 --count 2
+py print("\n===== 6. IPv6 (opcional) =====")
+h1 ping -6 -c 2 2001:db8:4::4
+py print("\n===== 7. Contadores de los routers =====")
+sh python3 tests/stats.py
