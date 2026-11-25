@@ -4,8 +4,8 @@ Tarea de Redes sobre el plano de datos programable. Incluye un informe de invest
 
 ## Integrantes
 
-- Roberto Murillo Lozano
-- Matías Venegas Sancho
+- Roberto Murillo Lozano C05436
+- Matías Venegas Sancho C4K929
 
 ## Estructura del repositorio
 
