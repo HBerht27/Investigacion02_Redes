@@ -146,7 +146,6 @@ control MyIngress(inout headers hdr,
         bit<32> tmp32 = 0;
         bit<64> acc   = 0;
         bit<64> thr   = 0;
-        bit<1>  flag  = 0;
 
         meta.tracked = 0;
         meta.flow_id = 0;
