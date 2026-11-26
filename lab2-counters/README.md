@@ -79,10 +79,10 @@ Los comandos se escriben en el CLI de Mininet. Cada ejecución de `traffic_gen.p
 
 | Prueba | Comando en Mininet | Resultado esperado |
 |---|---|---|
-| UDP | `h1 python3 traffic_gen.py --dst 10.0.0.2 --proto udp --count 100 --size 500` | flujo 10.0.0.1 → 10.0.0.2 con 100 paquetes y 50000 bytes; UDP con 100 paquetes; histograma `257-512`: 100 |
-| TCP | `h3 python3 traffic_gen.py --dst 10.0.0.4 --proto tcp --count 50 --size 200` | flujo 10.0.0.3 → 10.0.0.4 con 50 paquetes y 10000 bytes; TCP con 50 paquetes |
-| ICMP | `h2 python3 traffic_gen.py --dst 10.0.0.1 --proto icmp --count 20 --size 100` | ICMP con 20 paquetes y 2000 bytes |
-| Otros protocolos | `h4 python3 traffic_gen.py --dst 10.0.0.1 --proto other --count 10 --size 100` | "Otros" con 10 paquetes |
+| UDP | `h1 python3 traffic_gen.py --dst 10.0.0.2 --proto udp --count 100 --size 500` | flujo 10.0.0.1 → 10.0.0.2 con 100 paquetes y 50000 bytes; UDP con 100 paquetes y 50000 bytes; histograma `257-512`: 100. Como h2 no escucha en el puerto, su kernel responde con unos pocos ICMP "puerto inalcanzable" (de 528 bytes), que suben ICMP y el tamaño máximo |
+| TCP | `h3 python3 traffic_gen.py --dst 10.0.0.4 --proto tcp --count 50 --size 200` | flujo 10.0.0.3 → 10.0.0.4 con 50 paquetes y 10000 bytes; TCP con 100 paquetes y 12700 bytes (los 50 SYN de 200 bytes más 50 RST de 54 bytes que devuelve h4) |
+| ICMP | `h2 python3 traffic_gen.py --dst 10.0.0.1 --proto icmp --count 20 --size 100` | ICMP sube en 40 paquetes y 4000 bytes (20 peticiones y 20 respuestas de 100 bytes) |
+| Otros protocolos | `h4 python3 traffic_gen.py --dst 10.0.0.1 --proto other --count 10 --size 100` | "Otros" con 10 paquetes y 1000 bytes; h1 responde con algunos ICMP "protocolo inalcanzable" |
 | Ping | `h1 ping -c 5 h3` | flujos 1 → 3 y 3 → 1 con 5 paquetes cada uno (98 bytes de trama por paquete) |
 | Flujo elefante | `h2 iperf -s -u &` y luego `h1 iperf -c 10.0.0.2 -u -b 20M -t 10` | el flujo 10.0.0.1 → 10.0.0.2 aparece como elefante al superar el umbral |
 | Tamaños | cualquiera de las anteriores | máximo, mínimo, último, promedio e histograma coherentes con los tamaños enviados |

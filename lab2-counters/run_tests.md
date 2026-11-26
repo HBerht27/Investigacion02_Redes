@@ -1,7 +1,7 @@
 # Plan de pruebas Lab 2 (guion para el video)
 
-Terminal 1: `sudo python3 topology.py`
-Terminal 2: `python3 controller.py --reset --threshold 100000`
+Terminal 1: `make run`
+Terminal 2: `make controller`
 
 | # | Comando en Mininet | Esperado en el controlador |
 |---|--------------------|----------------------------|
@@ -14,3 +14,16 @@ Terminal 2: `python3 controller.py --reset --threshold 100000`
 
 Los bytes del switch son bytes de **trama** (con cabecera Ethernet): compararlos con la
 linea "ENVIADO" de traffic_gen.py, no con el tamano IP.
+
+## Nota sobre los números
+
+Los contadores cuentan **todo** lo que pasa por el switch, incluidas las respuestas que generan los
+kernels de los hosts, no solo lo que envía `traffic_gen.py`:
+
+- UDP a un puerto sin servidor: el host destino responde con unos pocos ICMP "puerto inalcanzable"
+  (Linux limita su ritmo), de hasta 528 bytes de trama con paquetes de 500 bytes.
+- TCP SYN a un puerto cerrado: cada SYN de 200 bytes recibe un RST de 54 bytes
+  (50 x 200 + 50 x 54 = 12700 bytes en 100 paquetes).
+- ICMP echo: cada petición recibe su respuesta del mismo tamaño.
+- Protocolo 253: el destino responde con ICMP "protocolo inalcanzable".
+Para tener cifras sin esas respuestas, abra un servidor antes (`h2 iperf -s -u &`) o reinicie con `make clean`.
